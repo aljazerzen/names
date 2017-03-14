@@ -1,0 +1,52 @@
+<html>
+
+<head>
+<title>{{ name }}</title>
+<link href="https://fonts.googleapis.com/css?family=Droid+Sans|Lobster|PT+Sans|Playfair+Display|Raleway|Roboto" rel="stylesheet">
+<style>
+input {
+  margin-top: 30px;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+	font-size: 20px;
+	font-family: inherit;
+	min-width: 600px;
+	text-align: center;
+	background: none;
+	color: inherit;
+}
+input:focus {
+	outline: none;
+}
+body {
+	color: {{ color }};
+	font-family: {{{ font-family }}};
+	font-weight: {{ weight }};
+	background-color: {{ background }};
+	text-align: center;
+}
+div {
+	text-align:center; 
+	margin-top: 200px;
+	padding-bottom: 200px;
+	font-size:50px;
+}
+</style>
+</head>
+
+<body >
+
+	<form method="POST">
+		<input name="adjective" placeholder="{{ name }} je ..." autocomplete="off"></input>	
+	</form>
+
+	<div onclick="location.reload()">
+		{{#if adjective }}
+		{{ name }} je {{ adjective }}
+		{{ else }}
+		{{ name }} ni za enkrat še nič.
+		{{/ if }}
+	</div>
+<body>
