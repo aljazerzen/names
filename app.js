@@ -3,10 +3,12 @@ var app = express();
 var hbs = require('express3-handlebars');
 var mongo = require('mongodb').MongoClient;
 var bodyParser = require('body-parser');
-var read = require('read-file');
+var fs = require('fs');
+
+var config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 // Connection URL 
-var url = 'mongodb://localhost:27017/names';
+var url = 'mongodb://localhost:' + (config.mongoPort || '27017') + '/' + (config.dbName || 'names');
 var db;
 var users;
 
@@ -120,22 +122,20 @@ app.post('/:name', function (req, res) {
 });
 
 app.get('/:name/delete', function(req, res) {
-	read('password', 'utf-8', function(err, password) {
-		password = password ? password : 'pass';
-		if(!req.query.password || req.query.password.trim() !== password.trim()) {
-			return res.status(403).send('Wrong password');
-		}
-		users.remove({ name: req.params.name}, function(err) {
-			res.redirect('/' + req.params.name);
-		});
+	password = config.password || 'pass';
+	if(!req.query.password || req.query.password.trim() !== password.trim()) {
+		return res.status(403).send('Wrong password');
+	}
+	users.remove({ name: req.params.name}, function(err) {
+		res.redirect('/' + req.params.name);
 	});
 });
 
 mongo.connect(url, function(err, db_local) {
 	db = db_local;
 	users = db.collection('users');
-	app.listen(3000, function () {
-		console.log('Example app listening on port 3000!')
+	app.listen(config.port || 80, function () {
+		console.log('App running on port ' + (config.port || 80));
 	});
 });
 
