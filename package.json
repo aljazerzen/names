@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
+  "repository": "https://github.com/aljazerzen/names.git",
   "author": "aljazerzen",
   "license": "ISC",
   "dependencies": {

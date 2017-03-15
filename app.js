@@ -9,6 +9,7 @@ var config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 // Connection URL 
 var url = 'mongodb://localhost:' + (config.mongoPort || '27017') + '/' + (config.dbName || 'names');
+var port = config.port || 80;
 var db;
 var users;
 
@@ -22,7 +23,7 @@ var index = 0;
 
 String.prototype.capitalize = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
-}
+};
 
 String.prototype.hash = function() {
 	var hash = 0, i, chr;
@@ -33,7 +34,7 @@ String.prototype.hash = function() {
     hash |= 0; 
   }
 	return Math.abs(hash);
-}
+};
 
 var fonts = [
 	"'Roboto', sans-serif",
@@ -62,9 +63,9 @@ var backgrounds = [
 	'#000'
 ];
 
-// app.get('/', function (req, res) {
-//	res.redirect('/ta stran');
-// });
+app.get('/', function (req, res) {
+	res.redirect('/ta stran');
+});
 
 app.get('/:name', function (req, res) {
 
@@ -105,7 +106,7 @@ app.post('/:name', function (req, res) {
 				name: req.params.name, 
 				last: 0,
 				adjectives: [adjective] 
-			}, function(err) {
+			}, function() {
 				res.redirect('/' + req.params.name);
 			});
 			return;
@@ -116,18 +117,18 @@ app.post('/:name', function (req, res) {
 		user.adjectives.push(adjective);
 		user.last = user.adjectives.length - 2;
 
-		users.update({ name: user.name }, user, {}, function(err) {
+		users.update({ name: user.name }, user, {}, function() {
 				res.redirect('/' + user.name);
 		});
 	});
 });
 
 app.get('/:name/delete', function(req, res) {
-	password = config.password || 'pass';
+	var password = config.password || 'pass';
 	if(!req.query.password || req.query.password.trim() !== password.trim()) {
 		return res.status(403).send('Wrong password');
 	}
-	users.remove({ name: req.params.name}, function(err) {
+	users.remove({ name: req.params.name}, function() {
 		res.redirect('/' + req.params.name);
 	});
 });
@@ -135,8 +136,8 @@ app.get('/:name/delete', function(req, res) {
 mongo.connect(url, function(err, db_local) {
 	db = db_local;
 	users = db.collection('users');
-	app.listen(config.port || 80, function () {
-		console.log('App running on port ' + (config.port || 80));
+	app.listen(port, function () {
+		console.log('App running on port ' + port);
 	});
 });
 
