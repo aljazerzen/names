@@ -16,6 +16,7 @@ app.engine('handlebars', hbs());
 app.set('view engine', 'handlebars');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(express.static('public'));
 
 var index = 0;
 
@@ -31,7 +32,7 @@ String.prototype.hash = function() {
     hash  = ((hash << 5) - hash) + chr;
     hash |= 0; 
   }
-	return hash;
+	return Math.abs(hash);
 }
 
 var fonts = [
@@ -61,9 +62,9 @@ var backgrounds = [
 	'#000'
 ];
 
-app.get('/', function (req, res) {
-	res.redirect('/ta stran');
-});
+// app.get('/', function (req, res) {
+//	res.redirect('/ta stran');
+// });
 
 app.get('/:name', function (req, res) {
 
