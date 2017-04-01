@@ -1,6 +1,0 @@
-{
-	"port": 80,
-	"mongoPort": 27017,
-	"dbName": "names",
-	"password": "rabbits"
-}

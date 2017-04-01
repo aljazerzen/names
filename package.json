@@ -2,20 +2,33 @@
   "name": "names",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node server/app.js"
   },
   "repository": "https://github.com/aljazerzen/names.git",
   "author": "aljazerzen",
   "license": "ISC",
   "dependencies": {
+    "@angular/common": "~4.0.0",
+    "@angular/compiler": "~4.0.0",
+    "@angular/core": "~4.0.0",
+    "@angular/forms": "~4.0.0",
+    "@angular/http": "~4.0.0",
+    "@angular/platform-browser": "~4.0.0",
+    "@angular/platform-browser-dynamic": "~4.0.0",
+    "@angular/router": "~4.0.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "express3-handlebars": "^0.5.2",
     "fs": "0.0.1-security",
     "handlebars": "^4.0.6",
-    "mongodb": "^2.2.24"
+    "mongodb": "^2.2.24",
+    "rxjs": "^5.2.0",
+    "zone.js": "^0.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.46",
+    "@types/jasmine": "2.5.36"
   }
 }
