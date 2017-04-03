@@ -3,32 +3,43 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/app.js"
+    "build": "tsc -p src/",
+    "build:watch": "tsc -p src/ -w",
+    "prod": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "start": "concurrently \"npm run build:watch\" \"npm run dev\"",
+    "lint": "tslint ./src/**/*.ts -t verbose"
   },
   "repository": "https://github.com/aljazerzen/names.git",
   "author": "aljazerzen",
   "license": "ISC",
   "dependencies": {
+    "@angular/animations": "^4.0.1",
     "@angular/common": "~4.0.0",
     "@angular/compiler": "~4.0.0",
     "@angular/core": "~4.0.0",
     "@angular/forms": "~4.0.0",
-    "@angular/http": "~4.0.0",
+    "@angular/http": "^4.0.1",
     "@angular/platform-browser": "~4.0.0",
     "@angular/platform-browser-dynamic": "~4.0.0",
     "@angular/router": "~4.0.0",
+    "angular-in-memory-web-api": "~0.3.0",
     "body-parser": "^1.17.1",
+    "core-js": "^2.4.1",
     "express": "^4.15.2",
     "express3-handlebars": "^0.5.2",
     "fs": "0.0.1-security",
     "handlebars": "^4.0.6",
     "mongodb": "^2.2.24",
     "rxjs": "^5.2.0",
+    "systemjs": "0.19.40",
     "zone.js": "^0.8.5"
   },
   "devDependencies": {
     "@types/node": "^6.0.46",
-    "@types/jasmine": "2.5.36"
+    "concurrently": "^3.2.0",
+    "nodemon": "^1.11.0",
+    "tslint": "^3.15.1",
+    "typescript": "~2.1.0"
   }
 }

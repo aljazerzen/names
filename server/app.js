@@ -3,13 +3,14 @@ const
   hbs = require('express3-handlebars'),
   mongo = require('mongodb').MongoClient,
   bodyParser = require('body-parser'),
-  fs = require('fs');
+  fs = require('fs'),
+  path = require('path');
 
 function initDb(app, callback) {
 
   let url = 'mongodb://' + app.locals.config.mongoUrl + ':' + app.locals.config.mongoPort + '/' + app.locals.config.mongoDbName;
   mongo.connect(url, function (err, db_local) {
-    if(err) {
+    if (err) {
       console.error(err);
       return;
     }
@@ -22,7 +23,8 @@ function initDb(app, callback) {
 function initExpress(app, callback) {
 
   app.set('views', 'server/views/');
-  app.use(express.static('public'));
+
+  app.locals.config.statics.forEach(path => app.use(express.static(path)));
 
   app.engine('handlebars', hbs());
   app.set('view engine', 'handlebars');
@@ -30,8 +32,14 @@ function initExpress(app, callback) {
   app.use(bodyParser.json()); // for parsing application/json
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-  // Init routes
-  require('./routes')(app);
+  // Init API routes
+  app.use('/api', require('./routes'));
+
+  // Serve index.html to all other requests (to start Angular 2)
+  app.get('*', function (req, res) {
+    res.render('index', { title: app.locals.config.title });
+    // res.sendFile(path.resolve(__dirname + '/../src/index.html')); // For when index.html is static file in /src
+  });
 
   app.listen(app.locals.config.port, callback);
 }
@@ -43,7 +51,7 @@ function start() {
   app.locals.config = require('./config');
 
   initDb(app, function () {
-    initExpress(app, function() {
+    initExpress(app, function () {
       console.log('App started')
     })
   });

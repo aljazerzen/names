@@ -1,7 +1,3 @@
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
-
 function hashString(string) {
   let hash = 0, i, chr;
   if (string.length === 0) return hash;
@@ -14,29 +10,18 @@ function hashString(string) {
 }
 
 exports.getName = function (req, res) {
-
   let hash = hashString(req.params.name);
   let fonts = req.app.locals.config.themes.fonts;
   let colors = req.app.locals.config.themes.colors;
-  let params = {
-    'font-family': fonts[Math.floor(hash / colors.length) % fonts.length],
-    color: colors[hash % colors.length].font,
-    background: colors[hash % colors.length].background,
-    weight: 100,
-    name: capitalize(req.params.name)
+  let response = {
+    font: fonts[Math.floor(hash / colors.length) % fonts.length],
+    colors: colors[hash % colors.length],
+    name: req.params.name,
   };
 
-  req.app.locals.users.findOne({ name: req.params.name }, {}, function (err, user) {
-
-    if (!user || !user.adjectives || user.adjectives.length === 0) {
-      return res.render('index', params);
-    }
-
-    let next = ((user.last ? user.last : 0) + 1) % user.adjectives.length;
-    params.adjective = user.adjectives[next];
-    res.render('index', params);
-    user.last = next;
-    req.app.locals.users.update({ name: user.name }, user, {});
+  req.app.locals.users.findOne({ name: req.params.name }, {}, (err, user) => {
+    response.adjectives = user && user.adjectives ? user.adjectives : [];
+    res.send(response);
   });
 
 };
@@ -55,20 +40,18 @@ exports.addAdjective = function (req, res) {
         name: req.params.name,
         last: 0,
         adjectives: [adjective]
-      }, function () {
-        res.redirect('/' + req.params.name);
+      }, () => {
+        res.redirect('/api/' + req.params.name)
       });
-      return;
+
+    } else {
+
+      if (!user.adjectives)
+        user.adjectives = [];
+      user.adjectives.push(adjective);
+
+      req.app.locals.users.update({ name: user.name }, user, {}, () => res.redirect('/api/' + user.name));
     }
-
-    if (!user.adjectives)
-      user.adjectives = [];
-    user.adjectives.push(adjective);
-    user.last = user.adjectives.length - 2;
-
-    req.app.locals.users.update({ name: user.name }, user, {}, function () {
-      res.redirect('/' + user.name);
-    });
   });
 };
 

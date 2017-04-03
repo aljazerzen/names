@@ -1,0 +1,60 @@
+.adjective-container {
+  margin-top: 200px;
+  position: relative;
+  padding: 20px;
+}
+
+.adjective-line {
+  padding: 15px;
+  position: absolute;
+  text-align: center;
+  font-size: 50px;
+  width: calc(100% - 80px);
+}
+
+.bottomPanel {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.btn {
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  font-size: 30px;
+  border-radius: 50%;
+}
+
+.btn:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.btn:active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.buttonBar {
+  padding: 10px;
+}
+
+input {
+  margin-top: 30px;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  font-size: 20px;
+  font-family: inherit;
+  width: 60%;
+  max-width: 600px;
+  text-align: center;
+  background: none;
+  color: inherit;
+  outline: none;
+}
+
+.goForm {
+  text-align: center;
+}

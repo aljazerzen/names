@@ -1,16 +1,17 @@
 const
-  name = require('./controllers/name.controller');
+  name = require('./controllers/name.controller'),
+  express = require('express');
 
-module.exports = function (app) {
+const router = express.Router();
 
+router.get('/:name', name.getName);
 
-  app.get('/', function (req, res) {
-    res.redirect('/ta stran');
-  });
+router.post('/:name', name.addAdjective);
 
-  app.get('/:name', name.getName);
+router.get('/:name/delete', name.cleanName);
 
-  app.post('/:name', name.addAdjective);
+router.all('*', (req, res) => {
+  res.status(404).send();
+});
 
-  app.get('/:name/delete', name.cleanName);
-};
+module.exports = router;

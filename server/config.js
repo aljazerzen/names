@@ -1,6 +1,7 @@
 const defaultPassword = 'rabbits';
 
 module.exports = {
+  title: 'Užali me',
   port: process.env.PORT || 3000,
   mongoPort: process.env.MONGO_PORT || 27017,
   mongoUrl: process.env.MONGO_URL || 'localhost',
@@ -25,5 +26,11 @@ module.exports = {
       "'Playfair Display', serif",
       "'Lobster', cursive"
     ]
-  }
+  },
+
+  statics: [
+    'public/',
+    'src/',
+    'node_modules/'
+  ]
 };
