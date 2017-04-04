@@ -1,26 +1,27 @@
 <div *ngIf="name" [ngStyle]="{ color: (name ? name.colors.font : '#000'), 'font-family': (name ? name.font : '') }">
-  <form method="GET" (submit)="go()" [@slide]="inputShown == 'go' ? 'active' : 'inactive'" class="goForm">
-    <input name="newName" placeholder="Kdo?" [(ngModel)]="newName" autocomplete="off"/>
-  </form>
-
-
   <div class="adjective-container">
+    <form method="POST" (submit)="submit()" [@scrollLine]="state == 'add' ? 'in' : 'out'" class="adjective-line addForm">
+      <span>{{ name.name }} </span>
+      <input name="newAdjective" [(ngModel)]="newAdjective" autocomplete="off" title="New Adjective" autosize/>
+    </form>
     <div *ngFor="let adjective of name.adjectives; let i = index" class="adjective-line noselect"
-         [@scrollLine]="i == selectedIndex ? 'in' : 'out'">
-      <span>{{ name.name }} je {{ adjective }}</span>
+         [@scrollLine]="state == 'add' ? 'out' : (i == selectedIndex ? 'in' : 'out')">
+      <span>{{ name.name }} {{ adjective }}</span>
     </div>
-    <div *ngIf="!name.adjectives || name.adjectives.length == 0" class="adjective-line noselect">
+    <div *ngIf="!name.adjectives || name.adjectives.length == 0" class="adjective-line noselect"
+         [@scrollLine]="state == 'add' ? 'out' : 'in'">
       <span>{{ name.name }} ni za enkrat še nič.</span>
     </div>
   </div>
 
   <div class="bottomPanel">
-    <form method="POST" (submit)="submit()" [@slide]="inputShown == 'add' ? 'active' : 'inactive'">
-      <input name="newAdjective" [placeholder]="name.name + ' je ...'" [(ngModel)]="newAdjective" autocomplete="off" title="New Adjective"/>
-    </form>
     <div class="buttonBar">
-      <i class="btn material-icons noselect" (click)="toggleInput('go')">{{ inputShown == 'go' ? 'close' : 'person_pin' }}</i>
-      <i class="btn material-icons noselect" (click)="toggleInput('add')">{{ inputShown == 'add' ? 'close' : 'new_releases' }}</i>
+      <form method="GET" (submit)="go()" [@slide]="state == 'go' ? 'active' : 'inactive'" class="goForm">
+        <input name="newName" placeholder="Kdo?" [(ngModel)]="newName" autocomplete="off"/>
+      </form>
+
+      <i class="btn material-icons noselect" (click)="toggleInput('go')">{{ state == 'go' ? 'close' : 'person_pin' }}</i>
+      <i class="btn material-icons noselect" (click)="toggleInput('add')">{{ state == 'add' ? 'close' : 'new_releases' }}</i>
       <span *ngIf="name.adjectives && name.adjectives.length != 0">
         <!--<i class="btn material-icons noselect">thumb_down</i>-->
         <i class="btn material-icons noselect" (click)="next()" *ngIf="name.adjectives.length > 1">arrow_downward</i>

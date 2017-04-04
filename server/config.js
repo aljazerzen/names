@@ -29,7 +29,6 @@ module.exports = {
   },
 
   statics: [
-    'public/',
     'src/',
     'node_modules/'
   ]

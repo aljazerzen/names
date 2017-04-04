@@ -22,13 +22,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         transform: 'translateY(-200%)',
         opacity: '0'
       })),
-      transition('out => in', [
+      transition('* => in', [
         style({
           transform: 'translateY(-200%)',
         }),
         animate('250ms ease-out')
       ]),
-      transition('in => out', [
+      transition('in => *', [
         animate('250ms ease-in-out', style({
           transform: 'translateY(200%)',
           opacity: '0'
@@ -45,17 +45,19 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
         opacity: '1'
       })),
       transition('active => inactive', animate('100ms ease-in')),
-      transition('inactive => active', animate('300ms ease-out'))
+      transition('inactive => active', animate('200ms ease-in-out'))
     ])
   ]
 })
 export class NameComponent implements OnInit {
 
+  chainWord: string = 'je';
+
   selectedIndex: number = 0;
   newAdjective: string;
   newName: string;
   name: Name;
-  inputShown: string = 'no';
+  state: string = 'adjectives';
 
   constructor(private http: Http,
               private router: Router,
@@ -82,13 +84,14 @@ export class NameComponent implements OnInit {
       .map((res: Response) => res.json())
       .subscribe(name => {
         this.name = name;
-        this.newAdjective = '';
+        this.state = 'adjectives';
         this.selectedIndex = name.adjectives.length - 1;
       });
   }
 
   go(): void {
     this.router.navigate([this.newName]);
+    this.newName = '';
   }
 
   next(): void {
@@ -96,6 +99,9 @@ export class NameComponent implements OnInit {
   }
 
   toggleInput(state: string): void {
-    this.inputShown = this.inputShown == state ? 'no' : state;
+    this.state = this.state == state ? 'adjectives' : state;
+    if (this.state == 'add') {
+      this.newAdjective = this.chainWord + ' ';
+    }
   }
 }
